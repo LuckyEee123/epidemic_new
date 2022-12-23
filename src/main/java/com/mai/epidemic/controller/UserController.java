@@ -4,6 +4,7 @@ import com.mai.epidemic.commons.Result;
 import com.mai.epidemic.pojo.User;
 import com.mai.epidemic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +15,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/userList")
+    @PreAuthorize("hasAuthority('adminx')")
     public Result getUsers() {
         return Result.success(userService.list());
     }

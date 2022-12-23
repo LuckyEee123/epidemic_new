@@ -1,5 +1,6 @@
 package com.mai.epidemic.service.impl;
 
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.mai.epidemic.commons.exception.ServiceException;
@@ -11,6 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -28,9 +32,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (ObjectUtil.isNull(user)) {
             throw new ServiceException("用户名或密码错误！");
         }
+        // 查询对应的权限信息
+        List<String> permsList = new ArrayList<>(ListUtil.toList("user","admin"));
 
         // 把数据封装成UserDetails返回
-        return new LoginUser(user);
+        return new LoginUser(user, permsList);
 
     }
 }

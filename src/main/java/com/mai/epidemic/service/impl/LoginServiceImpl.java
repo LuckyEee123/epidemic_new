@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -52,7 +53,7 @@ public class LoginServiceImpl implements LoginService {
         HashMap<String, String> map = new HashMap<>();
         map.put("token", jwt);
         // 把完整的用户信息存入redis
-        redisCache.setCacheObject(RedisConstants.LOGIN_USER_KEY + userId, loginUser);
+        redisCache.setCacheObject(RedisConstants.LOGIN_USER_KEY + userId, loginUser,7, TimeUnit.DAYS);
 
         return Result.success("登录成功！", map);
     }
