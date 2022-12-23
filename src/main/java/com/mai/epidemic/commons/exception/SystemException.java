@@ -1,6 +1,6 @@
 package com.mai.epidemic.commons.exception;
 
-public class ServiceException extends RuntimeException{
+public class SystemException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     private String code;
@@ -9,17 +9,16 @@ public class ServiceException extends RuntimeException{
         return code;
     }
 
-    public ServiceException(String message, Throwable cause) {
+    public SystemException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public ServiceException(String message) {
+    public SystemException(String message) {
         super(message);
     }
 
-    public ServiceException(String code, String message) {
+    public SystemException(String code, String message) {
         super(message);
         this.code = code;
     }
-
 }
