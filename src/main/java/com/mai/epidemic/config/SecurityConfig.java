@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -49,6 +50,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").anonymous()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
+    }
+
+    // 忽略下面的接口，不进行权限验证
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring() // .antMatchers("/health", "/session/**")
+                .antMatchers("/", "/favicon.ico", "/*.html", "/**/*.html", "/**/*.css", "/**/*.js", "/profile/**")
+                .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/webjars/**", "/*/api-docs");
     }
 
     @Bean

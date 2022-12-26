@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = AccessDeniedException.class)
     @ResponseBody
     public Result exceptionHandler(HttpServletRequest req, AccessDeniedException e){
-        log.error("权限不足，无法访问",e.getMessage());
+        log.error("权限不足，无法访问", e.getMessage());
         return Result.error(HttpCode.FORBIDDEN,"权限不足");
     }
 
