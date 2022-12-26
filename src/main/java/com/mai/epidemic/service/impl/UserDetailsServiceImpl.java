@@ -4,6 +4,7 @@ import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.mai.epidemic.commons.exception.ServiceException;
+import com.mai.epidemic.mapper.MenuMapper;
 import com.mai.epidemic.mapper.UserMapper;
 import com.mai.epidemic.pojo.User;
 import com.mai.epidemic.pojo.dto.LoginUser;
@@ -22,6 +23,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private MenuMapper menuMapper;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -33,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new ServiceException("用户名或密码错误！");
         }
         // 查询对应的权限信息
-        List<String> permsList = new ArrayList<>(ListUtil.toList("user","admin"));
+        List<String> permsList = menuMapper.selectPermsByUserId(user.getId());
 
         // 把数据封装成UserDetails返回
         return new LoginUser(user, permsList);

@@ -15,7 +15,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/userList")
-    @PreAuthorize("hasAuthority('adminx')")
+    @PreAuthorize("hasAuthority('sys:test:list')")
     public Result getUsers() {
         return Result.success(userService.list());
     }
