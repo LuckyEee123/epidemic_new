@@ -13,9 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
-
-
-    User addUser(User user);
+    void addUser(User user);
 }
 
 

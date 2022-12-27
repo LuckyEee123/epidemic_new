@@ -12,6 +12,7 @@ import com.mai.epidemic.service.UserService;
 import com.mai.epidemic.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -35,6 +36,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    BCryptPasswordEncoder encoder;
+
     @Override
     public List<User> list() {
         List<User> userList = null;
@@ -51,14 +55,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public User addUser(User user) {
+    public void addUser(User user) {
         IDUtil idUtil = new IDUtil();
         Date date = new Date();
         user.setUid(idUtil.FastUid());
         user.setCreateTime(date);
         user.setUpdateTime(date);
+        user.setPassword(encoder.encode(user.getPassword()));
         userMapper.addUser(user);
-        return user;
+        // 新增用户后删除redis内的缓存
+        redisCache.deleteObject(RedisConstants.QUERY_USER_LIST);
     }
 }
 

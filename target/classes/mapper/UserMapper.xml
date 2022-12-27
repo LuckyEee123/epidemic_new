@@ -29,8 +29,8 @@
         address,create_time,update_time,
         avatar_url,role,is_delete
     </sql>
-    <insert id="addUser" useGeneratedKeys="true">
-        insert into sys_user(uid,username, nickname, password, age, sex, email, phone, address, avatarUrl, createTime, role)
-        values(#{uid}, #{username}, #{nickname}, #{password}, #{age}, #{sex}, #{phone}, #{email}, #{avatar_url},#{address}, #{create_time}, 'ROLE_USER')
+    <insert id="addUser" useGeneratedKeys="true" >
+        insert into sys_user(uid,username, nickname, password, age, sex, email, phone, address, avatar_url, create_time,update_time, role)
+        values(#{uid}, #{username}, #{nickname}, #{password}, #{age}, #{sex}, #{email}, #{phone},#{address}, #{avatarUrl}, #{createTime}, #{updateTime}, 'ROLE_USER')
     </insert>
 </mapper>

@@ -21,9 +21,10 @@ public class UserController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasAuthority('sys:test:add')")
     public Result addUser(@RequestBody User user) {
         userService.addUser(user);
-        return Result.success();
+        return Result.success("添加成功");
     }
 
 }
