@@ -51,7 +51,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new ServiceException("请重新登陆！");
         }
         // 存入SecurityContextHolder
-        // TODO 获取权限信息
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(request, response);

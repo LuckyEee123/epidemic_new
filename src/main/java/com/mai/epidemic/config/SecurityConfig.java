@@ -1,5 +1,6 @@
 package com.mai.epidemic.config;
 
+import com.mai.epidemic.commons.config.CorsConfig;
 import com.mai.epidemic.filter.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
@@ -31,14 +33,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationEntryPoint authenticationEntryPoint;
 
 
-    @Autowired
-    CorsFilter corsFilter;
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.cors();
+        // JWT验证
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        // 异常处理
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+        // 跨域
         http
                 //关闭csrf
                 .csrf().disable()
@@ -47,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问
-                .antMatchers("/login").anonymous()
+                .antMatchers("/user/login").anonymous()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
     }
