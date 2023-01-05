@@ -1,5 +1,6 @@
 package com.mai.epidemic.service;
 
+import com.mai.epidemic.commons.Result;
 import com.mai.epidemic.pojo.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,5 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface UserService extends IService<User> {
 
-    void addUser(User user);
+    Result addUser(User user);
 }
