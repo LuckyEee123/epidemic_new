@@ -12,4 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface UserService extends IService<User> {
 
     Result addUser(User user);
+
+
+    Result deleteUserById(Integer id);
 }

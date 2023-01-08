@@ -37,6 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new ServiceException("用户名或密码错误！");
         }
         // 查询对应的权限信息
+
         List<String> permsList = menuMapper.selectPermsByUserId(user.getId());
 
         // 把数据封装成UserDetails返回

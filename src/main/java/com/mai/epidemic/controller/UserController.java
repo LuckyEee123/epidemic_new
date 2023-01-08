@@ -15,16 +15,20 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/userList")
-    @PreAuthorize("hasAuthority('sys:test:list')")
+    @PreAuthorize("hasAuthority('sys:users:list')")
     public Result getUsers() {
         return Result.success(userService.list());
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasAuthority('sys:test:add')")
+    @PreAuthorize("hasAuthority('sys:users:add')")
     public Result addUser(@RequestBody User user) {
-        userService.addUser(user);
-        return Result.success("添加成功");
+        return userService.addUser(user);
+    }
+
+    @PostMapping("/delete/{id}")
+    public Result deleteUserById(@PathVariable Integer id) {
+        return userService.deleteUserById(id);
     }
 
 }

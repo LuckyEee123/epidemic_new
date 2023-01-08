@@ -16,14 +16,9 @@ import lombok.Data;
 @Data
 public class User implements Serializable {
     /**
-     * id
-     */
-    @TableId(type = IdType.AUTO)
-    private Integer id;
-
-    /**
      * 身份码
      */
+    @TableId
     private Integer uid;
 
     /**

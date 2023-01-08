@@ -74,10 +74,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setCreateTime(DateUtil.date());
         user.setUpdateTime(DateUtil.date());
         user.setPassword(encoder.encode(user.getPassword()));
+        user.setRole("ROLE_USER");
         // 新增用户后删除redis内的缓存
         redisCache.deleteObject(RedisConstants.QUERY_USER_LIST);
         return userMapper.insert(user) == 1 ? Result.success("添加成功", user) : Result.error("添加失败！") ;
 
+    }
+
+    @Override
+    public Result deleteUserById(Integer id) {
+        redisCache.deleteObject(RedisConstants.QUERY_USER_LIST);
+        return userMapper.deleteById(id) == 1 ? Result.success("删除成功") : Result.error("删除失败");
     }
 }
 
