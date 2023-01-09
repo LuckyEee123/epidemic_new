@@ -19,8 +19,10 @@ public class HealthController {
     }
 
     @PostMapping("/add")
-    public Result addHealthInfo(@RequestBody HealthInfo healthInfo) {
+    public Result saveOrUpdateHealthInfo(@RequestBody HealthInfo healthInfo) {
         return healthInfoService.addHealthInfo(healthInfo);
     }
+
+
 
 }

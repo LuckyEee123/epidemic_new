@@ -11,4 +11,8 @@ public class IDUtil {
         return Math.abs(IdUtil.fastSimpleUUID().hashCode());
     }
 
+    public static void main(String[] args) {
+        System.out.println(FastUid());
+    }
+
 }
