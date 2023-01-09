@@ -50,4 +50,9 @@ public class Menu implements Serializable {
      */
     private String perms;
 
+    /**
+     * 删除标识（0正常，1删除）
+     */
+    private String isDelete;
+
 }

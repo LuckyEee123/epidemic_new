@@ -18,5 +18,25 @@ public interface MenuService extends IService<Menu> {
      * @return
      */
     Result getMenuList();
+
+    /**
+     * 添加权限菜单
+     * @return
+     */
+    Result addPerm(Menu menu);
+
+    /**
+     * 编辑权限菜单
+     * @param menu
+     * @return
+     */
+    Result updatePermById(Menu menu);
+
+    /**
+     * 删除权限
+     * @param id
+     * @return
+     */
+    Result deletePermById(Integer id);
 }
 

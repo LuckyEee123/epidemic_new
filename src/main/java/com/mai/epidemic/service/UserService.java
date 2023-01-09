@@ -18,4 +18,11 @@ public interface UserService extends IService<User> {
     Result updateUser(User user);
 
     Result getUsersList(Integer pageNum, Integer pageSize, String nickname);
+
+    /**
+     * 获取用户总数
+     * @return
+     */
+    Result getUsersNum();
+
 }

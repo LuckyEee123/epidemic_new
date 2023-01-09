@@ -18,6 +18,7 @@ import com.mai.epidemic.commons.utils.RedisCache;
 import com.mai.epidemic.pojo.User;
 import com.mai.epidemic.pojo.dto.UserDto;
 import com.mai.epidemic.pojo.vo.PageVo;
+import com.mai.epidemic.pojo.vo.UsersNum;
 import com.mai.epidemic.service.UserService;
 import com.mai.epidemic.mapper.UserMapper;
 import org.springframework.beans.BeanUtils;
@@ -31,13 +32,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
-* @author Administrator
-* @description 针对表【sys_user】的数据库操作Service实现
-* @createDate 2022-12-20 21:50:37
-*/
+ * @author Administrator
+ * @description 针对表【sys_user】的数据库操作Service实现
+ * @createDate 2022-12-20 21:50:37
+ */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
-    implements UserService {
+        implements UserService {
 
     @Autowired
     UserMapper userMapper;
@@ -68,6 +69,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
+    public Result getUsersNum() {
+        String usersNum = null;
+        String cache = redisCache.getCacheObject(RedisConstants.USERS_NUM);
+        if (StrUtil.isBlank(cache)) {
+            LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(User::getIsDelete, 0);
+            List<User> userList = list(wrapper);
+            usersNum = String.valueOf(userList.size());
+            redisCache.setCacheObject(RedisConstants.USERS_NUM, usersNum, RedisConstants.CACHE_USERS_NUM_TIMEOUT, TimeUnit.SECONDS);
+        } else {
+            usersNum = cache;
+        }
+
+        return Result.success("获取成功！", usersNum);
+    }
+
+    @Override
     public Result addUser(User user) {
 
         LambdaQueryWrapper<User> userWrapper = new LambdaQueryWrapper<>();
@@ -85,7 +103,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setPassword(encoder.encode(user.getPassword()));
         user.setRole("ROLE_USER");
 
-        return userMapper.insert(user) == 1 ? Result.success("添加成功", user) : Result.error("添加失败！") ;
+        return userMapper.insert(user) == 1 ? Result.success("添加成功", user) : Result.error("添加失败！");
 
     }
 
@@ -101,7 +119,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         userWrapper.eq(User::getIsDelete, SysConstants.IS_NOT_DELETE)
                 .set(User::getUpdateTime, DateUtil.date());
 
-        return update(user, userWrapper) ? Result.success("更新成功！", user) : Result.error("更新失败！") ;
+        return update(user, userWrapper) ? Result.success("更新成功！", user) : Result.error("更新失败！");
     }
 }
 

@@ -17,7 +17,12 @@ public class UserController {
     @GetMapping("/userList")
     @PreAuthorize("hasAuthority('sys:users:list')")
     public Result getUsers(Integer pageNum, Integer pageSize, String nickname) {
-        return Result.success(userService.getUsersList(pageNum, pageSize, nickname));
+        return userService.getUsersList(pageNum, pageSize, nickname);
+    }
+
+    @GetMapping("/usersNum")
+    public Result getUsersNum() {
+        return userService.getUsersNum();
     }
 
     @PostMapping("/add")
