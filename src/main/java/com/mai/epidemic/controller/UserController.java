@@ -17,7 +17,7 @@ public class UserController {
     @GetMapping("/userList")
     @PreAuthorize("hasAuthority('sys:users:list')")
     public Result getUsers() {
-        return Result.success(userService.list());
+        return Result.success(userService.getUsersList());
     }
 
     @PostMapping("/add")
@@ -26,9 +26,16 @@ public class UserController {
         return userService.addUser(user);
     }
 
-    @PostMapping("/delete/{id}")
-    public Result deleteUserById(@PathVariable Integer id) {
-        return userService.deleteUserById(id);
+    @PostMapping("/delete/{uid}")
+    @PreAuthorize("hasAuthority('sys:users:delete')")
+    public Result deleteUserById(@PathVariable Integer uid) {
+        return userService.deleteUserById(uid);
+    }
+
+    @PostMapping("/update")
+    @PreAuthorize("hasAuthority('sys:users:update')")
+    public Result updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
     }
 
 }

@@ -54,12 +54,6 @@ public class UserDto {
     private String address;
 
     /**
-     * 创建时间
-     */
-    // private Date createTime;
-
-
-    /**
      * 头像
      */
     private String avatarUrl;

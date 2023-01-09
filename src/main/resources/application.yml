@@ -11,6 +11,15 @@ spring:
     host: localhost
     port: 6379
 
+tencent:
+  appId: 1308835562
+  secretId: AKIDlPs8AzVpdGiy4xysiqnY8XijaDeu1vbp
+  secretKey: 95kAvdEh5LOFyWs1ynwrZErJZcFtQp6B
+  region: ap-guangzhou
+  photoBucket: moss-1308835562
+
+
+
 mybatis-plus:
   mapper-locations: classpath:mapper/*
   configuration:

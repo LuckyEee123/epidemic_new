@@ -38,7 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         // 查询对应的权限信息
 
-        List<String> permsList = menuMapper.selectPermsByUserId(user.getId());
+        List<String> permsList = menuMapper.selectPermsByUserId(user.getUid());
 
         // 把数据封装成UserDetails返回
         return new LoginUser(user, permsList);

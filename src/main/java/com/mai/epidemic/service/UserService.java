@@ -13,6 +13,9 @@ public interface UserService extends IService<User> {
 
     Result addUser(User user);
 
+    Result deleteUserById(Integer uid);
 
-    Result deleteUserById(Integer id);
+    Result updateUser(User user);
+
+    Result getUsersList();
 }

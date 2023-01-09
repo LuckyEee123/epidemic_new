@@ -6,14 +6,19 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mai.epidemic.commons.Result;
 import com.mai.epidemic.commons.constants.RedisConstants;
+import com.mai.epidemic.commons.constants.SysConstants;
+import com.mai.epidemic.commons.utils.BeanCopyUtils;
 import com.mai.epidemic.commons.utils.IDUtil;
 import com.mai.epidemic.commons.utils.RedisCache;
 import com.mai.epidemic.pojo.User;
+import com.mai.epidemic.pojo.dto.UserDto;
 import com.mai.epidemic.service.UserService;
 import com.mai.epidemic.mapper.UserMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
 * @author Administrator
@@ -44,18 +50,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     BCryptPasswordEncoder encoder;
 
     @Override
-    public List<User> list() {
+    public Result getUsersList() {
         List<User> userList = null;
         String list = redisCache.getCacheObject(RedisConstants.QUERY_USER_LIST);
+
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getIsDelete, 0);
         if (StrUtil.isBlank(list)) {
-            List<User> dbUserList = userMapper.selectList(null);
-            redisCache.setCacheObject(RedisConstants.QUERY_USER_LIST, JSONUtil.toJsonStr(dbUserList));
-            return dbUserList;
+            List<User> dbUserList = userMapper.selectList(queryWrapper);
+
+            List<UserDto> userDtos = BeanCopyUtils.copyBeanList(dbUserList, UserDto.class);
+
+            redisCache.setCacheObject(RedisConstants.QUERY_USER_LIST, JSONUtil.toJsonStr(userDtos), RedisConstants.CACHE_TIMEOUT, TimeUnit.SECONDS);
+            return Result.success(userDtos);
         } else {
              userList = JSONUtil.toBean(list, new TypeReference<List<User>>() {
              }, true);
         }
-        return userList;
+        return Result.success(userList);
     }
 
     @Override
@@ -82,9 +94,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public Result deleteUserById(Integer id) {
+    public Result deleteUserById(Integer uid) {
         redisCache.deleteObject(RedisConstants.QUERY_USER_LIST);
-        return userMapper.deleteById(id) == 1 ? Result.success("删除成功") : Result.error("删除失败");
+        return userMapper.deleteById(uid) == 1 ? Result.success("删除成功") : Result.error("删除失败");
+    }
+
+    @Override
+    public Result updateUser(User user) {
+        LambdaUpdateWrapper<User> userWrapper = new LambdaUpdateWrapper<>();
+        userWrapper.eq(User::getIsDelete, SysConstants.IS_NOT_DELETE)
+                .set(User::getUpdateTime, DateUtil.date());
+        return update(user, userWrapper) ? Result.success("更新成功！", user) : Result.error("更新失败！") ;
     }
 }
 
