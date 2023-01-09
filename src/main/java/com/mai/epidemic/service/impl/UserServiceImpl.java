@@ -27,12 +27,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Administrator
+ * @author mai
  * @description 针对表【sys_user】的数据库操作Service实现
  * @createDate 2022-12-20 21:50:37
  */
@@ -103,13 +102,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setPassword(encoder.encode(user.getPassword()));
         user.setRole("ROLE_USER");
 
+        redisCache.deleteObject(RedisConstants.USERS_NUM);
+
         return userMapper.insert(user) == 1 ? Result.success("添加成功", user) : Result.error("添加失败！");
 
     }
 
     @Override
     public Result deleteUserById(Integer uid) {
-
+        redisCache.deleteObject(RedisConstants.USERS_NUM);
         return userMapper.deleteById(uid) == 1 ? Result.success("删除成功") : Result.error("删除失败");
     }
 

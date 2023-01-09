@@ -1,4 +1,4 @@
-/src/main/resources/oss.properties
+/src/main/resources/application-oss.yml
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

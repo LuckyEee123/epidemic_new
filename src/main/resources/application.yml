@@ -2,6 +2,9 @@ server:
   port: 6920
 
 spring:
+  profiles:
+    include:
+      oss
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/epidemic_new
@@ -10,13 +13,18 @@ spring:
   redis:
     host: localhost
     port: 6379
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 10MB
 
-tencent:
-  appId: ${oss.appId}
-  secretId: ${oss.secretId}
-  secretKey: ${oss.secretKey}
-  region: ${oss.region}
-  photoBucket: ${oss.photoBucket}
+
+#tencent:
+#  appId: ${oss.appId}
+#  secretId: ${oss.secretId}
+#  secretKey: ${oss.secretKey}
+#  region: ${oss.region}
+#  photoBucket: ${oss.photoBucket}
 
 
 
