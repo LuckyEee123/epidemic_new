@@ -12,11 +12,11 @@ spring:
     port: 6379
 
 tencent:
-  appId: 1308835562
-  secretId: AKIDlPs8AzVpdGiy4xysiqnY8XijaDeu1vbp
-  secretKey: 95kAvdEh5LOFyWs1ynwrZErJZcFtQp6B
-  region: ap-guangzhou
-  photoBucket: moss-1308835562
+  appId: ${oss.appId}
+  secretId: ${oss.secretId}
+  secretKey: ${oss.secretKey}
+  region: ${oss.region}
+  photoBucket: ${oss.photoBucket}
 
 
 
