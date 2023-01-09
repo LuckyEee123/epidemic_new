@@ -27,17 +27,16 @@ public class UploadServiceImpl implements UploadService {
 
 
     public COSClient getCosClient() {
-        COSCredentials cred = new BasicCOSCredentials(CosUtils.secretId, CosUtils.secretKey);
-        ClientConfig clientConfig = new ClientConfig(new Region(CosUtils.region));
-        COSClient cosClient = new COSClient(cred, clientConfig);
-        return cosClient;
+        COSCredentials cred = new BasicCOSCredentials(CosUtils.getSecretId(), CosUtils.getSecretKey());
+        ClientConfig clientConfig = new ClientConfig(new Region(CosUtils.getRegion()));
+        return new COSClient(cred, clientConfig);
     }
 
     @Override
     public Result uploadImages(MultipartFile img) throws IOException {
         //上传至存储桶的名字
         String KEY = "/epidemicMS/images/" + img.getOriginalFilename();
-        String bucket = CosUtils.photoBucket;
+        String bucket = CosUtils.getPhotoBucket();
 
         //获得文件名
         String fileName = img.getOriginalFilename();
@@ -65,6 +64,6 @@ public class UploadServiceImpl implements UploadService {
         // 关闭客户端
         client.shutdown();
         //拼接获得存储桶中可访问的地址
-        return Result.success("https://" + bucket + ".cos." + CosUtils.region + ".myqcloud.com" + KEY);
+        return Result.success("https://" + bucket + ".cos." + CosUtils.getRegion() + ".myqcloud.com" + KEY);
     }
 }

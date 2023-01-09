@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "tencent",ignoreInvalidFields = true,ignoreUnknownFields = true)
 public class CosUtils {
 
-    public static String appId;
+    private static String appId;
 
-    public static String secretId;
+    private static String secretId;
 
-    public static String secretKey;
+    private static String secretKey;
 
-    public static String region;
+    private static String region;
 
-    public static String photoBucket;
+    private static String photoBucket;
 
     //注入值
     @Value("${tencent.appId}")
@@ -40,4 +40,23 @@ public class CosUtils {
         this.photoBucket = photoBucket;
     }
 
+    public static String getAppId() {
+        return appId;
+    }
+
+    public static String getSecretId() {
+        return secretId;
+    }
+
+    public static String getSecretKey() {
+        return secretKey;
+    }
+
+    public static String getRegion() {
+        return region;
+    }
+
+    public static String getPhotoBucket() {
+        return photoBucket;
+    }
 }
