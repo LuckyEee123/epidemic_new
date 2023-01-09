@@ -32,5 +32,18 @@ public interface DemandService extends IService<Demand> {
      * @return
      */
     Result deleteDemandById(Integer nid);
+
+    /**
+     * 获取需求总数
+     * @return
+     */
+    Result getDemandsNum();
+
+    /**
+     * 编辑需求
+     * @param demand
+     * @return
+     */
+    Result updateDemand(Demand demand);
 }
 

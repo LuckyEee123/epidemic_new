@@ -18,6 +18,11 @@ public class DemandController {
         return demandService.getDemandList(pageNum, pageSize, nickname);
     }
 
+    @GetMapping("/getDemandsNum")
+    public Result getDemandsNum() {
+        return demandService.getDemandsNum();
+    }
+
     @PostMapping("/add")
     public Result addDemand(@RequestBody Demand demand) {
         return demandService.addDemand(demand);
@@ -26,6 +31,10 @@ public class DemandController {
     @PostMapping("/delete/{nid}")
     public Result deleteDemand(@PathVariable Integer nid) {
         return demandService.deleteDemandById(nid);
+    }
+
+    public Result updateDemand(@RequestBody Demand demand) {
+        return demandService.updateDemand(demand);
     }
 
 }

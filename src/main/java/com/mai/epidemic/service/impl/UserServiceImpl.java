@@ -74,7 +74,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             wrapper.eq(User::getIsDelete, 0);
             List<User> userList = list(wrapper);
             usersNum = String.valueOf(userList.size());
-            redisCache.setCacheObject(RedisConstants.USERS_NUM, usersNum, RedisConstants.CACHE_USERS_NUM_TIMEOUT, TimeUnit.SECONDS);
+            redisCache.setCacheObject(RedisConstants.USERS_NUM, usersNum, RedisConstants.CACHE_NUM_TIMEOUT, TimeUnit.SECONDS);
         } else {
             usersNum = cache;
         }
